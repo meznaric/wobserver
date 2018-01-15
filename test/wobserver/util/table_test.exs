@@ -3,6 +3,10 @@ defmodule Wobserver.Util.TableTest do
 
   alias Wobserver.Table
 
+  setup _context do
+    [tid: :ets.new(:blah, [:set, :private])]
+  end
+
   describe "sanitize" do
     test "with integer" do
       assert Table.sanitize(1) == 1
@@ -50,10 +54,10 @@ defmodule Wobserver.Util.TableTest do
 
 
   describe "info" do
-    test "returns table information with defaults" do
+    test "returns table information with defaults", %{tid: tid} do
       assert %{
-        id: 1,
-        name: :code,
+        id: ^tid,
+        name: :blah,
         type: :set,
         size: _,
         memory: _,
@@ -64,24 +68,24 @@ defmodule Wobserver.Util.TableTest do
           write_concurrency: false,
           compressed: false,
         }
-      } = Table.info(1)
+      } = Table.info(tid)
     end
 
-    test "returns table information without table, when set to false" do
-      assert_raise MatchError, fn -> %{data: _} = Table.info(1) end
+    test "returns table information without table, when set to false", %{tid: tid} do
+      assert_raise MatchError, fn -> %{data: _} = Table.info(tid) end
     end
 
-    test "returns table information with table, when set to true" do
+    test "returns table information with table, when set to true", %{tid: tid} do
       assert %{
         data: _
-      } = Table.info(1, true)
+      } = Table.info(tid, true)
     end
 
-    test "returns empty data, when set to true, but protection private" do
+    test "returns empty data, when set to true, but protection private", %{tid: tid} do
       assert %{
         protection: :private,
         data: []
-      } = Table.info(1, true)
+      } = Table.info(tid, true)
     end
 
     test "returns non empty data, when set to true, but protection protected" do

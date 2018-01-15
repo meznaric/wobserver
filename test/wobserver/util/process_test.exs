@@ -98,7 +98,7 @@ defmodule Wobserver.Util.ProcessTest do
     test "returns current", context do
       %{current: current} = context[:logger]
 
-      assert current == "gen_event.fetch_msg/5"
+      assert current == "gen_event.fetch_msg/6"
     end
 
     test "returns memory", context do
@@ -186,7 +186,7 @@ defmodule Wobserver.Util.ProcessTest do
     test "returns current", context do
       %{current: current} = context[:logger]
 
-      assert current == "gen_event.fetch_msg/5"
+      assert current == "gen_event.fetch_msg/6"
     end
 
     test "returns status", context do
